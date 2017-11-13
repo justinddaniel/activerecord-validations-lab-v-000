@@ -5,6 +5,17 @@ class Post < ActiveRecord::Base
   validates :category, inclusion: {in: %w(Fiction Non-Fiction)}
 end
 
-class MyValidator < ActiveModel::Validator
-  def validate(record)
-    record.title.include? ("Won't Believe") || ("Secret") || (/Top \d+/) || ("Guess")
+CLICKBAIT_PATTERNS = [
+  /Won't Believe/i,
+  /Secret/i,
+  /Top [0-9]*/i,
+  /Guess/i
+]
+
+  def is_clickbait?
+    if CLICKBAIT_PATTERNS.none? { |pat| pat.match title }
+      errors.add(:title, "must be clickbait")
+    end
+  end
+
+end
