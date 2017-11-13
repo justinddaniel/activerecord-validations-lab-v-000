@@ -4,3 +4,7 @@ class Post < ActiveRecord::Base
   validates :summary, length: {maximum: 250}
   validates :category, inclusion: {in: %w(Fiction Non-Fiction)}
 end
+
+class MyValidator < ActiveModel::Validator
+  def validate(record)
+    record.title.include? ("Won't Believe") || ("Secret") || (/Top \d+/) || ("Guess")
